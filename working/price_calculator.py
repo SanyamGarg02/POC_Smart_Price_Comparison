@@ -70,10 +70,49 @@ def extract_weights(details_str):
         }
 
 
-def calculate_retail_price(listing_id: str, gemgem_df, making_charge_per_g=20, markup_pct=15):
+# def calculate_retail_price(listing_id: str, gemgem_df, making_charge_per_g=20, markup_pct=50):
+#     row = gemgem_df[gemgem_df['listing_id'] == listing_id]
+#     if row.empty:
+#         return 0.0
+
+#     price_details = row['details'].values[0]
+#     weights = extract_weights(price_details)
+#     metal_weight = weights["metal_weight"]
+#     diamond_weight = weights["diamond_weight"]
+#     diamond_source = weights["diamond_source"]
+
+#     # Gold price
+#     gold_price_per_gram = fetch_gold_price_usd_per_gram()
+
+#     # Determine gold weight
+#     if metal_weight > 0:
+#         gold_weight = metal_weight
+#     else:
+#         gold_weight = diamond_weight * 1.5
+
+#     gold_cost = gold_weight * gold_price_per_gram
+#     making_charge = gold_weight * making_charge_per_g
+    
+
+#     # Diamond pricing (simple fixed pricing, could be improved)
+#     if diamond_source.lower() == "lab":
+#         diamond_price_per_carat = 400
+#     else:
+#         diamond_price_per_carat = 1500
+
+#     diamond_cost = diamond_weight * diamond_price_per_carat
+
+#     # Total base price
+#     base_price = gold_cost + making_charge + diamond_cost
+
+#     # Apply retail markup
+#     retail_price = base_price * (1 + markup_pct / 100)
+
+#     return round(retail_price, 2)
+def calculate_retail_price(listing_id: str, gemgem_df, making_charge_per_g=20, markup_pct=50):
     row = gemgem_df[gemgem_df['listing_id'] == listing_id]
     if row.empty:
-        return 0.0
+        return {}
 
     price_details = row['details'].values[0]
     weights = extract_weights(price_details)
@@ -85,26 +124,31 @@ def calculate_retail_price(listing_id: str, gemgem_df, making_charge_per_g=20, m
     gold_price_per_gram = fetch_gold_price_usd_per_gram()
 
     # Determine gold weight
-    if metal_weight > 0:
-        gold_weight = metal_weight
-    else:
-        gold_weight = diamond_weight * 1.5
+    gold_weight = metal_weight if metal_weight > 0 else diamond_weight * 1.5
 
     gold_cost = gold_weight * gold_price_per_gram
     making_charge = gold_weight * making_charge_per_g
 
-    # Diamond pricing (simple fixed pricing, could be improved)
-    if diamond_source.lower() == "lab":
-        diamond_price_per_carat = 400
-    else:
-        diamond_price_per_carat = 1500
-
+    # Diamond pricing
+    diamond_price_per_carat = 400 if diamond_source.lower() == "lab" else 1500
     diamond_cost = diamond_weight * diamond_price_per_carat
 
-    # Total base price
+    # Base + markup
     base_price = gold_cost + making_charge + diamond_cost
+    markup_value = base_price * (markup_pct / 100)
+    retail_price = base_price + markup_value
 
-    # Apply retail markup
-    retail_price = base_price * (1 + markup_pct / 100)
+    return {
+        "gold_cost": round(gold_cost, 2),
+        "gold_price_per_gram": round(gold_price_per_gram, 2),
+        "gold_weight": round(gold_weight, 2),
+        "diamond_cost": round(diamond_cost, 2),
+        "diamond_price_per_carat": diamond_price_per_carat,
+        "diamond_weight": round(diamond_weight, 2),
+        "diamond_source": diamond_source,
+        "making_charge": round(making_charge, 2),
+        "markup_pct": markup_pct,
+        "markup_value": round(markup_value, 2),
+        "retail_price": round(retail_price, 2)
+    }
 
-    return round(retail_price, 2)

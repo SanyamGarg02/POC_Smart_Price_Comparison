@@ -1,4 +1,4 @@
-#run this script to get poc_glamira.csv ir test glamira dataset. 
+#run this script to get poc_glamira.csv ie test glamira dataset. 
 #Unable to use scraping to get urls first, so used manually added urls for now.
 
 from selenium import webdriver
