@@ -11,7 +11,7 @@ from normalization import get_similar_prices
 from price_calculator import calculate_retail_price
 
 # Load datasets
-gemgem_df = pd.read_csv("/Users/sanyamsmac/Documents/poc/gemgem/poc_gemgem.csv")
+gemgem_df = pd.read_csv("data/poc_gemgem.csv")
 
 app = FastAPI()
 

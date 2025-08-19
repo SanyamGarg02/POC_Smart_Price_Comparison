@@ -54,9 +54,9 @@ def preprocess_df(df: pd.DataFrame) -> pd.DataFrame:
     return df
 
 # Load datasets
-kay_df = preprocess_df(pd.read_csv("/Users/sanyamsmac/Desktop/house price prediction/kay_outlet/poc_kay.csv"))
-glamira_df = preprocess_df(pd.read_csv("/Users/sanyamsmac/Desktop/house price prediction/glamira/poc_glamira.csv"))
-gemgem_df = preprocess_df(pd.read_csv("/Users/sanyamsmac/Desktop/house price prediction/gemgem/poc_gemgem.csv"))
+kay_df = preprocess_df(pd.read_csv("data/poc_kay.csv"))
+glamira_df = preprocess_df(pd.read_csv("data/poc_glamira.csv"))
+gemgem_df = preprocess_df(pd.read_csv("data/poc_gemgem.csv"))
 
 
 # Clean price columns

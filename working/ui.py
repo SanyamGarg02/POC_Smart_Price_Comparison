@@ -7,9 +7,9 @@ from normalization import get_similar_prices
 from normalization import preprocess_df
 
 # Load datasets
-gemgem_df = pd.read_csv("/Users/sanyamsmac/Documents/poc/data/poc_gemgem.csv")
-kay_df = preprocess_df(pd.read_csv("/Users/sanyamsmac/Documents/poc/data/poc_kay.csv"))
-glamira_df = preprocess_df(pd.read_csv("/Users/sanyamsmac/Documents/poc/data/poc_glamira.csv"))
+gemgem_df = pd.read_csv("data/poc_gemgem.csv")
+kay_df = preprocess_df(pd.read_csv("data/poc_kay.csv"))
+glamira_df = preprocess_df(pd.read_csv("data/poc_glamira.csv"))
 competitor_df = pd.concat([kay_df, glamira_df], ignore_index=True)
 
 st.set_page_config(page_title="Jewelry Price Comparison POC", layout="centered")
