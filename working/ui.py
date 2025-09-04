@@ -79,7 +79,7 @@ if listing_id:
             savings = competitor_avg_price - gemgem_price
             savings_pct = (savings / competitor_avg_price * 100) if competitor_avg_price > 0 else 0
 
-            # ---- NEW FEATURE: Log JSON if GemGem price > competitor avg ----
+            # ---- Log JSON if GemGem price > competitor avg ----
             if gemgem_price > competitor_avg_price:
                 def convert(o):
                     if isinstance(o, (np.int64, np.int32)):
@@ -102,11 +102,12 @@ if listing_id:
                 with open("logs/price_mismatch_log.json", "a") as f:
                     f.write(json.dumps(log_data) + "\n")
 
-                st.error("⚠️ GemGem price is higher than competitor average!")
-                st.subheader("📋 Logged Competitor Prices for Review")
-                df_log = pd.DataFrame(log_data["similar_products"])
-                st.dataframe(df_log)
-            # ----------------------------------------------------------------
+                st.error("⚠️ GemGem price is higher than competitor average! Logged for review.")
+
+            # ---- ALWAYS SHOW competitor products in UI ----
+            df_competitors = pd.DataFrame(similar_products["similar_products"])
+            st.subheader("📋 Competitor Products (with URLs)")
+            st.dataframe(df_competitors)
 
             # Chart
             st.subheader("📊 Price Comparison")
